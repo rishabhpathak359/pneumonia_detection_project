@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia Detection System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-lungs me-2"></i>
+                Pneumonia Detection System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How it Works</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        AI-Powered Pneumonia Detection
+                    </h1>
+                    <p class="lead text-white-50 mb-4">
+                        Upload a chest X-ray image and get instant pneumonia detection results 
+                        using our advanced deep learning model with 96%+ accuracy.
+                    </p>
+                    <a href="#upload-section" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-upload me-2"></i>Upload X-Ray
+                    </a>
+                    <a href="#about" class="btn btn-outline-light btn-lg">
+                        Learn More
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="fas fa-x-ray display-1 text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5" id="upload-section">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-file-medical me-2"></i>
+                            Upload Chest X-Ray Image
+                        </h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                        <h5>Drag & Drop or Click to Upload</h5>
+                                        <p class="text-muted">
+                                            Supported formats: PNG, JPG, JPEG (Max: 16MB)
+                                        </p>
+                                        <input type="file" id="fileInput" name="file" accept=".png,.jpg,.jpeg,.gif" hidden>
+                                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('fileInput').click()">
+                                            Choose File
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="filePreview" class="mb-3" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img id="previewImage" src="" alt="Preview" class="img-fluid rounded">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6>File Details:</h6>
+                                        <p id="fileName" class="mb-1"></p>
+                                        <p id="fileSize" class="mb-1 text-muted"></p>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFile()">
+                                            <i class="fas fa-times"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-lg" id="submitBtn" disabled>
+                                    <i class="fas fa-diagnoses me-2"></i>
+                                    Analyze X-Ray
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Analyzing image... Please wait.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="display-6 fw-bold">About Pneumonia Detection</h2>
+                    <p class="lead text-muted">
+                        Leveraging AI to assist healthcare professionals in early pneumonia detection
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                            <h5>AI-Powered Analysis</h5>
+                            <p class="text-muted">
+                                Advanced CNN model trained on thousands of chest X-ray images 
+                                for accurate pneumonia detection.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-3x text-success mb-3"></i>
+                            <h5>Instant Results</h5>
+                            <p class="text-muted">
+                                Get pneumonia detection results in seconds, helping 
+                                healthcare providers make faster decisions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
+                            <h5>High Accuracy</h5>
+                            <p class="text-muted">
+                                Achieved 96%+ accuracy on test datasets, providing 
+                                reliable assistance for medical diagnosis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="display-6 fw-bold">How It Works</h2>
+                    <p class="lead text-muted">
+                        Simple 3-step process for pneumonia detection
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4 text-center">
+                    <div class="step-number">1</div>
+                    <h5 class="mt-3">Upload X-Ray</h5>
+                    <p class="text-muted">
+                        Upload a clear chest X-ray image in PNG, JPG, or JPEG format.
+                    </p>
+                </div>
+                <div class="col-lg-4 mb-4 text-center">
+                    <div class="step-number">2</div>
+                    <h5 class="mt-3">AI Analysis</h5>
+                    <p class="text-muted">
+                        Our CNN model analyzes the image for pneumonia indicators.
+                    </p>
+                </div>
+                <div class="col-lg-4 mb-4 text-center">
+                    <div class="step-number">3</div>
+                    <h5 class="mt-3">Get Results</h5>
+                    <p class="text-muted">
+                        Receive instant results with confidence scores and recommendations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5>Pneumonia Detection System</h5>
+                    <p class="text-muted">
+                        AI-powered medical imaging analysis for healthcare professionals.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-end">
+                    <h6>Disclaimer</h6>
+                    <p class="small text-muted">
+                        This tool is for educational and research purposes only. 
+                        Always consult healthcare professionals for medical diagnosis.
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">
+                        &copy; 2024 Pneumonia Detection System. Built with Flask & TensorFlow.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
